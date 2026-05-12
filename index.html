@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Loan Prediction System</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    
+    <div class="container">
+        <h1>Loan Prediction System</h1>
+        <form action="/predict" method="post">
+            <input type="text" name="Gender" placeholder="Gender (1=Male, 0=Female)" required>
+            <input type="text" name="Married" placeholder="Married (1=Yes, 0=No)" required>
+            <input type="text" name="ApplicantIncome" placeholder="Applicant Income" required>
+            <input type="text" name="LoanAmount" placeholder="Loan Amount" required>
+            <input type="text" name="Credit_History" placeholder="Credit History (1 or 0)" required>
+            <button type="submit">Predict</button>
+        </form>
+    </div>
+</body>
+</html>
