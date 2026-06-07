@@ -1,0 +1,1297 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Sahl Green Farm</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;0,700;1,300;1,400&family=Jost:wght@300;400;500;600&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --green-deep:   #162d1e;
+      --green-mid:    #2a5c3a;
+      --green-light:  #4a8c5c;
+      --green-pale:   #d4e8da;
+      --cream:        #f8f3ea;
+      --cream-dark:   #ede5d4;
+      --amber:        #c67d30;
+      --amber-light:  #e8a256;
+      --text-dark:    #1a2015;
+      --text-mid:     #4a5240;
+      --text-light:   #8a9280;
+      --white:        #ffffff;
+    }
+
+    html { scroll-behavior: smooth; font-size: 16px; }
+
+    body {
+      font-family: 'Jost', sans-serif;
+      background: var(--cream);
+      color: var(--text-dark);
+      overflow-x: hidden;
+    }
+
+    /* ─── GRAIN OVERLAY ─── */
+    body::before {
+      content: '';
+      position: fixed; inset: 0;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.04'/%3E%3C/svg%3E");
+      pointer-events: none; z-index: 9999;
+      opacity: 0.35;
+    }
+
+    /* ─── NAVIGATION ─── */
+    nav {
+      position: fixed; top: 0; left: 0; right: 0; z-index: 1000;
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 1.2rem 5%;
+      transition: all 0.5s ease;
+    }
+    nav.scrolled {
+      background: rgba(22,45,30,0.97);
+      backdrop-filter: blur(12px);
+      padding: 0.8rem 5%;
+      box-shadow: 0 2px 30px rgba(0,0,0,0.2);
+    }
+    .nav-logo {
+      display: flex; align-items: center; gap: 0.7rem;
+      text-decoration: none;
+    }
+    .nav-logo-icon {
+      width: 42px; height: 42px;
+      background: var(--amber);
+      border-radius: 50%;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 1.3rem;
+      flex-shrink: 0;
+    }
+    .nav-logo-text {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.4rem;
+      font-weight: 600;
+      color: var(--white);
+      letter-spacing: 0.02em;
+      line-height: 1.1;
+    }
+    .nav-logo-text span { display: block; font-size: 0.65rem; font-family: 'Jost', sans-serif; font-weight: 300; letter-spacing: 0.18em; text-transform: uppercase; color: var(--amber-light); }
+    .nav-links {
+      display: flex; gap: 2.2rem; list-style: none;
+    }
+    .nav-links a {
+      color: rgba(255,255,255,0.85);
+      text-decoration: none;
+      font-size: 0.82rem;
+      font-weight: 500;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      transition: color 0.3s;
+      position: relative;
+    }
+    .nav-links a::after {
+      content: ''; position: absolute; bottom: -3px; left: 0; right: 0;
+      height: 1px; background: var(--amber-light);
+      transform: scaleX(0); transition: transform 0.3s ease;
+    }
+    .nav-links a:hover { color: var(--white); }
+    .nav-links a:hover::after { transform: scaleX(1); }
+    .nav-cta {
+      background: var(--amber);
+      color: var(--white) !important;
+      padding: 0.55rem 1.4rem;
+      border-radius: 2px;
+      font-size: 0.78rem !important;
+      transition: background 0.3s !important;
+    }
+    .nav-cta:hover { background: var(--amber-light) !important; }
+    .nav-cta::after { display: none !important; }
+    .hamburger { display: none; flex-direction: column; gap: 5px; cursor: pointer; }
+    .hamburger span { width: 24px; height: 2px; background: white; transition: all 0.3s; }
+
+    /* ─── HERO ─── */
+    .hero {
+      min-height: 100vh;
+      background: var(--green-deep);
+      position: relative;
+      display: flex; align-items: center;
+      overflow: hidden;
+    }
+    .hero-bg {
+      position: absolute; inset: 0;
+      background:
+        radial-gradient(ellipse 80% 70% at 60% 50%, rgba(42,92,58,0.5) 0%, transparent 70%),
+        radial-gradient(ellipse 40% 60% at 85% 80%, rgba(198,125,48,0.15) 0%, transparent 60%),
+        linear-gradient(160deg, #0e1f12 0%, #162d1e 40%, #1e3d26 100%);
+    }
+    .hero-pattern {
+      position: absolute; inset: 0;
+      background-image:
+        radial-gradient(circle at 20% 30%, rgba(74,140,92,0.08) 0%, transparent 40%),
+        radial-gradient(circle at 80% 70%, rgba(198,125,48,0.06) 0%, transparent 35%);
+    }
+    /* Decorative circles */
+    .hero-circle {
+      position: absolute;
+      border-radius: 50%;
+      border: 1px solid rgba(74,140,92,0.2);
+    }
+    .hero-circle:nth-child(1) { width: 600px; height: 600px; top: -200px; right: -150px; }
+    .hero-circle:nth-child(2) { width: 400px; height: 400px; top: -100px; right: -50px; border-color: rgba(198,125,48,0.15); }
+    .hero-circle:nth-child(3) { width: 200px; height: 200px; bottom: 15%; left: 5%; border-color: rgba(74,140,92,0.15); }
+
+    .hero-content {
+      position: relative; z-index: 2;
+      padding: 0 5%;
+      max-width: 700px;
+      margin-left: 5%;
+    }
+    .hero-badge {
+      display: inline-flex; align-items: center; gap: 0.5rem;
+      background: rgba(198,125,48,0.15);
+      border: 1px solid rgba(198,125,48,0.4);
+      color: var(--amber-light);
+      font-size: 0.72rem;
+      font-weight: 500;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      padding: 0.4rem 1rem;
+      border-radius: 2px;
+      margin-bottom: 1.8rem;
+      animation: fadeUp 0.8s ease both;
+    }
+    .hero-badge::before { content: '●'; font-size: 0.5rem; animation: pulse 2s ease-in-out infinite; }
+    @keyframes pulse { 0%,100%{opacity:1} 50%{opacity:0.3} }
+
+    .hero-title {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: clamp(3.2rem, 7vw, 6rem);
+      font-weight: 300;
+      line-height: 1.05;
+      color: var(--white);
+      margin-bottom: 1.5rem;
+      animation: fadeUp 0.8s 0.15s ease both;
+    }
+    .hero-title em { font-style: italic; color: var(--green-light); }
+    .hero-title strong { display: block; font-weight: 700; }
+
+    .hero-desc {
+      font-size: 1.05rem;
+      font-weight: 300;
+      line-height: 1.8;
+      color: rgba(255,255,255,0.65);
+      max-width: 480px;
+      margin-bottom: 2.5rem;
+      animation: fadeUp 0.8s 0.3s ease both;
+    }
+
+    .hero-actions {
+      display: flex; gap: 1rem; flex-wrap: wrap;
+      animation: fadeUp 0.8s 0.45s ease both;
+    }
+    .btn-primary {
+      display: inline-flex; align-items: center; gap: 0.5rem;
+      background: var(--amber);
+      color: var(--white);
+      text-decoration: none;
+      padding: 0.9rem 2rem;
+      font-size: 0.85rem;
+      font-weight: 600;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      border-radius: 2px;
+      transition: all 0.3s ease;
+      border: none; cursor: pointer;
+    }
+    .btn-primary:hover { background: var(--amber-light); transform: translateY(-2px); box-shadow: 0 8px 24px rgba(198,125,48,0.35); }
+    .btn-outline {
+      display: inline-flex; align-items: center; gap: 0.5rem;
+      background: transparent;
+      color: var(--white);
+      text-decoration: none;
+      padding: 0.9rem 2rem;
+      font-size: 0.85rem;
+      font-weight: 500;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      border-radius: 2px;
+      border: 1px solid rgba(255,255,255,0.35);
+      transition: all 0.3s ease;
+      cursor: pointer;
+    }
+    .btn-outline:hover { border-color: rgba(255,255,255,0.7); background: rgba(255,255,255,0.07); }
+
+    .hero-stats {
+      position: absolute; right: 5%; bottom: 12%;
+      display: flex; gap: 3rem;
+      animation: fadeUp 0.8s 0.6s ease both;
+      z-index: 2;
+    }
+    .stat { text-align: center; }
+    .stat-num {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 2.8rem;
+      font-weight: 600;
+      color: var(--white);
+      line-height: 1;
+    }
+    .stat-num span { color: var(--amber); }
+    .stat-label { font-size: 0.72rem; font-weight: 400; letter-spacing: 0.14em; text-transform: uppercase; color: rgba(255,255,255,0.5); margin-top: 0.3rem; }
+
+    .hero-scroll {
+      position: absolute; bottom: 2rem; left: 50%;
+      transform: translateX(-50%);
+      display: flex; flex-direction: column; align-items: center; gap: 0.4rem;
+      color: rgba(255,255,255,0.4);
+      font-size: 0.65rem;
+      font-weight: 500;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      z-index: 2;
+      animation: fadeUp 0.8s 0.8s ease both;
+    }
+    .hero-scroll-line {
+      width: 1px; height: 40px;
+      background: linear-gradient(to bottom, rgba(255,255,255,0.4), transparent);
+      animation: scrollDown 1.5s ease-in-out infinite;
+    }
+    @keyframes scrollDown { 0%{transform:scaleY(0);transform-origin:top} 50%{transform:scaleY(1);transform-origin:top} 51%{transform:scaleY(1);transform-origin:bottom} 100%{transform:scaleY(0);transform-origin:bottom} }
+
+    @keyframes fadeUp { from{opacity:0;transform:translateY(28px)} to{opacity:1;transform:translateY(0)} }
+
+    /* ─── MARQUEE STRIP ─── */
+    .marquee-strip {
+      background: var(--amber);
+      padding: 0.7rem 0;
+      overflow: hidden;
+      white-space: nowrap;
+    }
+    .marquee-inner {
+      display: inline-flex;
+      animation: marquee 22s linear infinite;
+    }
+    .marquee-item {
+      display: inline-flex; align-items: center; gap: 1.2rem;
+      font-size: 0.75rem;
+      font-weight: 600;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--white);
+      padding: 0 2rem;
+    }
+    .marquee-dot { width: 4px; height: 4px; background: rgba(255,255,255,0.5); border-radius: 50%; }
+    @keyframes marquee { from{transform:translateX(0)} to{transform:translateX(-50%)} }
+
+    /* ─── SECTIONS COMMON ─── */
+    section { padding: 6rem 5%; }
+    .section-label {
+      display: inline-flex; align-items: center; gap: 0.6rem;
+      font-size: 0.72rem;
+      font-weight: 600;
+      letter-spacing: 0.22em;
+      text-transform: uppercase;
+      color: var(--green-mid);
+      margin-bottom: 1rem;
+    }
+    .section-label::before { content: ''; width: 28px; height: 2px; background: var(--green-mid); }
+    .section-title {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: clamp(2.2rem, 4vw, 3.4rem);
+      font-weight: 400;
+      line-height: 1.15;
+      color: var(--text-dark);
+      margin-bottom: 1.2rem;
+    }
+    .section-title em { font-style: italic; color: var(--green-mid); }
+    .section-body {
+      font-size: 1rem;
+      font-weight: 300;
+      line-height: 1.85;
+      color: var(--text-mid);
+      max-width: 540px;
+    }
+
+    /* reveal on scroll */
+    .reveal { opacity: 0; transform: translateY(30px); transition: all 0.75s ease; }
+    .reveal.visible { opacity: 1; transform: translateY(0); }
+    .reveal-delay-1 { transition-delay: 0.1s; }
+    .reveal-delay-2 { transition-delay: 0.2s; }
+    .reveal-delay-3 { transition-delay: 0.3s; }
+    .reveal-delay-4 { transition-delay: 0.4s; }
+
+    /* ─── ABOUT ─── */
+    .about { background: var(--cream); }
+    .about-grid {
+      display: grid; grid-template-columns: 1fr 1fr;
+      gap: 6rem; align-items: center;
+    }
+    .about-image-wrap { position: relative; }
+    .about-image-main {
+      width: 100%; aspect-ratio: 3/4;
+      border-radius: 4px;
+      overflow: hidden;
+      position: relative;
+    }
+    .about-image-inner {
+      width: 100%; height: 100%;
+      background: linear-gradient(145deg, #2a5c3a 0%, #162d1e 60%, #1a3520 100%);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 6rem;
+      position: relative;
+      overflow: hidden;
+    }
+    .about-image-inner::after {
+      content: '';
+      position: absolute; inset: 0;
+      background: radial-gradient(ellipse at 30% 40%, rgba(74,140,92,0.25) 0%, transparent 60%);
+    }
+    .about-badge-float {
+      position: absolute; bottom: -1.5rem; right: -1.5rem;
+      background: var(--amber);
+      color: var(--white);
+      padding: 1.5rem;
+      border-radius: 4px;
+      text-align: center;
+      width: 140px;
+      box-shadow: 0 8px 30px rgba(198,125,48,0.3);
+    }
+    .about-badge-float .num {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 2.8rem;
+      font-weight: 700;
+      line-height: 1;
+    }
+    .about-badge-float .lbl { font-size: 0.72rem; font-weight: 500; letter-spacing: 0.08em; opacity: 0.9; }
+    .about-accent-box {
+      position: absolute; top: -1.5rem; left: -1.5rem;
+      width: 100px; height: 100px;
+      border: 2px solid var(--green-pale);
+      border-radius: 4px;
+    }
+    .about-features {
+      margin-top: 2.5rem;
+      display: flex; flex-direction: column; gap: 1rem;
+    }
+    .about-feature {
+      display: flex; align-items: flex-start; gap: 1rem;
+      padding: 1.2rem;
+      background: var(--white);
+      border-radius: 4px;
+      border-left: 3px solid var(--green-light);
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+    .about-feature:hover { transform: translateX(4px); box-shadow: 0 4px 20px rgba(0,0,0,0.07); }
+    .about-feature-icon { font-size: 1.4rem; flex-shrink: 0; }
+    .about-feature-title { font-weight: 600; font-size: 0.9rem; color: var(--text-dark); margin-bottom: 0.2rem; }
+    .about-feature-text { font-size: 0.85rem; font-weight: 300; color: var(--text-mid); line-height: 1.6; }
+
+    /* ─── PRODUCTS ─── */
+    .products { background: var(--green-deep); }
+    .products .section-label { color: var(--green-pale); }
+    .products .section-label::before { background: var(--green-pale); }
+    .products .section-title { color: var(--white); }
+    .products .section-title em { color: var(--amber-light); }
+    .products .section-body { color: rgba(255,255,255,0.55); }
+    .products-header { display: flex; align-items: flex-end; justify-content: space-between; margin-bottom: 3rem; flex-wrap: wrap; gap: 1.5rem; }
+    .products-filters {
+      display: flex; gap: 0.5rem; flex-wrap: wrap;
+    }
+    .filter-btn {
+      padding: 0.45rem 1.1rem;
+      border-radius: 2px;
+      font-size: 0.75rem;
+      font-weight: 500;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      cursor: pointer;
+      border: 1px solid rgba(255,255,255,0.2);
+      background: transparent;
+      color: rgba(255,255,255,0.6);
+      transition: all 0.3s;
+    }
+    .filter-btn.active, .filter-btn:hover {
+      background: var(--amber);
+      border-color: var(--amber);
+      color: var(--white);
+    }
+    .products-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+      gap: 1.5rem;
+    }
+    .product-card {
+      background: rgba(255,255,255,0.04);
+      border: 1px solid rgba(255,255,255,0.08);
+      border-radius: 6px;
+      overflow: hidden;
+      transition: all 0.4s ease;
+      cursor: pointer;
+    }
+    .product-card:hover { transform: translateY(-6px); background: rgba(255,255,255,0.08); border-color: rgba(74,140,92,0.4); box-shadow: 0 16px 40px rgba(0,0,0,0.3); }
+    .product-card[data-hidden="true"] { display: none; }
+    .product-img {
+      aspect-ratio: 4/3;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 3.5rem;
+      background: rgba(42,92,58,0.3);
+      position: relative; overflow: hidden;
+    }
+    .product-img::after {
+      content: '';
+      position: absolute; inset: 0;
+      background: linear-gradient(to bottom, transparent 50%, rgba(22,45,30,0.4) 100%);
+    }
+    .product-tag {
+      position: absolute; top: 0.8rem; right: 0.8rem;
+      background: var(--amber);
+      color: white;
+      font-size: 0.65rem;
+      font-weight: 600;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      padding: 0.25rem 0.6rem;
+      border-radius: 2px;
+      z-index: 1;
+    }
+    .product-info { padding: 1.4rem; }
+    .product-name { font-family: 'Cormorant Garamond', serif; font-size: 1.35rem; font-weight: 600; color: var(--white); margin-bottom: 0.4rem; }
+    .product-desc { font-size: 0.82rem; font-weight: 300; color: rgba(255,255,255,0.5); line-height: 1.65; margin-bottom: 1rem; }
+    .product-footer { display: flex; align-items: center; justify-content: space-between; }
+    .product-price { font-family: 'Cormorant Garamond', serif; font-size: 1.3rem; font-weight: 600; color: var(--amber-light); }
+    .product-price span { font-size: 0.75rem; color: rgba(255,255,255,0.4); font-family: 'Jost', sans-serif; font-weight: 300; }
+    .product-btn {
+      width: 36px; height: 36px;
+      background: var(--amber);
+      border: none; border-radius: 50%;
+      color: white;
+      font-size: 1.1rem;
+      cursor: pointer;
+      display: flex; align-items: center; justify-content: center;
+      transition: all 0.3s;
+    }
+    .product-btn:hover { background: var(--amber-light); transform: scale(1.1); }
+
+    /* ─── SERVICES ─── */
+    .services { background: var(--cream-dark); }
+    .services-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 2rem; margin-top: 3.5rem; }
+    .service-card {
+      background: var(--white);
+      border-radius: 6px;
+      padding: 2.2rem;
+      position: relative;
+      overflow: hidden;
+      transition: all 0.4s ease;
+      border-bottom: 3px solid transparent;
+    }
+    .service-card:hover { transform: translateY(-5px); box-shadow: 0 16px 40px rgba(0,0,0,0.1); border-bottom-color: var(--green-mid); }
+    .service-card::before {
+      content: '';
+      position: absolute; top: 0; left: 0; right: 0;
+      height: 3px;
+      background: linear-gradient(to right, var(--green-mid), var(--amber));
+      transform: scaleX(0); transform-origin: left;
+      transition: transform 0.4s ease;
+    }
+    .service-card:hover::before { transform: scaleX(1); }
+    .service-icon {
+      width: 56px; height: 56px;
+      background: var(--green-pale);
+      border-radius: 50%;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 1.6rem;
+      margin-bottom: 1.5rem;
+      transition: all 0.3s;
+    }
+    .service-card:hover .service-icon { background: var(--green-mid); transform: scale(1.1); }
+    .service-title { font-family: 'Cormorant Garamond', serif; font-size: 1.4rem; font-weight: 600; color: var(--text-dark); margin-bottom: 0.7rem; }
+    .service-text { font-size: 0.88rem; font-weight: 300; color: var(--text-mid); line-height: 1.8; }
+    .service-link {
+      display: inline-flex; align-items: center; gap: 0.4rem;
+      margin-top: 1.2rem;
+      font-size: 0.78rem;
+      font-weight: 600;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--green-mid);
+      text-decoration: none;
+      transition: gap 0.3s;
+    }
+    .service-link:hover { gap: 0.7rem; }
+
+    /* ─── SEASONAL ─── */
+    .seasonal { background: var(--cream); }
+    .seasonal-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 1rem; margin-top: 3rem; }
+    .season-card {
+      border-radius: 8px;
+      overflow: hidden;
+      position: relative;
+      aspect-ratio: 3/4;
+      cursor: pointer;
+    }
+    .season-card-inner {
+      width: 100%; height: 100%;
+      display: flex; flex-direction: column; justify-content: flex-end;
+      padding: 1.5rem;
+      position: relative;
+      transition: transform 0.4s ease;
+    }
+    .season-card:hover .season-card-inner { transform: scale(1.03); }
+    .season-spring .season-card-inner { background: linear-gradient(to top, rgba(22,45,30,0.85) 0%, rgba(42,92,58,0.4) 60%, rgba(74,140,92,0.2) 100%), linear-gradient(145deg, #3d7a4e 0%, #2a5c3a 100%); }
+    .season-summer .season-card-inner { background: linear-gradient(to top, rgba(22,45,30,0.85) 0%, rgba(74,140,92,0.4) 60%, rgba(120,180,100,0.2) 100%), linear-gradient(145deg, #4a8c5c 0%, #3d7a4e 100%); }
+    .season-autumn .season-card-inner { background: linear-gradient(to top, rgba(22,45,30,0.85) 0%, rgba(198,125,48,0.4) 60%, rgba(220,150,80,0.2) 100%), linear-gradient(145deg, #c67d30 0%, #a05a1a 100%); }
+    .season-winter .season-card-inner { background: linear-gradient(to top, rgba(22,45,30,0.85) 0%, rgba(22,45,30,0.5) 60%, rgba(42,62,50,0.3) 100%), linear-gradient(145deg, #2a3e30 0%, #162d1e 100%); }
+    .season-emoji { font-size: 2.5rem; margin-bottom: 0.7rem; }
+    .season-name { font-family: 'Cormorant Garamond', serif; font-size: 1.5rem; font-weight: 600; color: var(--white); }
+    .season-crops { font-size: 0.78rem; font-weight: 300; color: rgba(255,255,255,0.7); margin-top: 0.3rem; line-height: 1.5; }
+    .season-overflow { overflow: hidden; border-radius: 8px; }
+
+    /* ─── CONTACT ─── */
+    .contact { background: var(--green-deep); }
+    .contact-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 6rem; align-items: start; }
+    .contact .section-label { color: var(--green-pale); }
+    .contact .section-label::before { background: var(--green-pale); }
+    .contact .section-title { color: var(--white); }
+    .contact .section-title em { color: var(--amber-light); }
+    .contact .section-body { color: rgba(255,255,255,0.55); margin-bottom: 2.5rem; }
+    .contact-info-list { display: flex; flex-direction: column; gap: 1.5rem; }
+    .contact-info-item {
+      display: flex; align-items: flex-start; gap: 1rem;
+    }
+    .contact-info-icon {
+      width: 44px; height: 44px; flex-shrink: 0;
+      background: rgba(255,255,255,0.06);
+      border: 1px solid rgba(255,255,255,0.1);
+      border-radius: 50%;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 1.1rem;
+    }
+    .contact-info-label { font-size: 0.72rem; font-weight: 600; letter-spacing: 0.14em; text-transform: uppercase; color: var(--amber-light); margin-bottom: 0.2rem; }
+    .contact-info-value { font-size: 0.95rem; font-weight: 300; color: rgba(255,255,255,0.75); }
+
+    /* Form */
+    .contact-form { display: flex; flex-direction: column; gap: 1.2rem; }
+    .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 1.2rem; }
+    .form-group { display: flex; flex-direction: column; gap: 0.5rem; }
+    .form-group label { font-size: 0.75rem; font-weight: 500; letter-spacing: 0.12em; text-transform: uppercase; color: rgba(255,255,255,0.5); }
+    .form-group input,
+    .form-group select,
+    .form-group textarea {
+      background: rgba(255,255,255,0.06);
+      border: 1px solid rgba(255,255,255,0.12);
+      border-radius: 3px;
+      padding: 0.85rem 1rem;
+      color: var(--white);
+      font-family: 'Jost', sans-serif;
+      font-size: 0.9rem;
+      font-weight: 300;
+      transition: all 0.3s;
+      outline: none;
+      resize: none;
+    }
+    .form-group input::placeholder,
+    .form-group textarea::placeholder { color: rgba(255,255,255,0.2); }
+    .form-group input:focus,
+    .form-group select:focus,
+    .form-group textarea:focus {
+      border-color: var(--amber);
+      background: rgba(255,255,255,0.09);
+      box-shadow: 0 0 0 3px rgba(198,125,48,0.12);
+    }
+    .form-group select option { background: var(--green-deep); color: var(--white); }
+    .form-success {
+      display: none;
+      background: rgba(74,140,92,0.2);
+      border: 1px solid rgba(74,140,92,0.4);
+      border-radius: 4px;
+      padding: 1rem 1.2rem;
+      color: var(--green-pale);
+      font-size: 0.88rem;
+      align-items: center;
+      gap: 0.6rem;
+    }
+    .form-success.show { display: flex; }
+
+    /* ─── NEWSLETTER ─── */
+    .newsletter {
+      background: var(--amber);
+      padding: 4rem 5%;
+    }
+    .newsletter-inner {
+      max-width: 700px; margin: 0 auto;
+      text-align: center;
+    }
+    .newsletter h2 {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 2.4rem;
+      font-weight: 400;
+      color: var(--white);
+      margin-bottom: 0.7rem;
+    }
+    .newsletter p { color: rgba(255,255,255,0.8); font-size: 0.95rem; font-weight: 300; margin-bottom: 2rem; }
+    .newsletter-form { display: flex; gap: 0.6rem; max-width: 480px; margin: 0 auto; }
+    .newsletter-form input {
+      flex: 1;
+      padding: 0.85rem 1.2rem;
+      background: rgba(255,255,255,0.2);
+      border: 1px solid rgba(255,255,255,0.4);
+      border-radius: 2px;
+      color: white;
+      font-family: 'Jost', sans-serif;
+      font-size: 0.9rem;
+      outline: none;
+      transition: all 0.3s;
+    }
+    .newsletter-form input::placeholder { color: rgba(255,255,255,0.6); }
+    .newsletter-form input:focus { background: rgba(255,255,255,0.3); border-color: white; }
+    .newsletter-form button {
+      padding: 0.85rem 1.6rem;
+      background: var(--green-deep);
+      color: white;
+      border: none;
+      border-radius: 2px;
+      font-family: 'Jost', sans-serif;
+      font-size: 0.82rem;
+      font-weight: 600;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      cursor: pointer;
+      transition: all 0.3s;
+    }
+    .newsletter-form button:hover { background: var(--green-mid); }
+    .newsletter-success { display: none; color: white; font-size: 0.95rem; }
+    .newsletter-success.show { display: block; }
+
+    /* ─── FOOTER ─── */
+    footer {
+      background: #0d1a10;
+      padding: 4rem 5% 2rem;
+      color: rgba(255,255,255,0.5);
+    }
+    .footer-grid { display: grid; grid-template-columns: 2fr 1fr 1fr 1fr; gap: 3rem; padding-bottom: 3rem; border-bottom: 1px solid rgba(255,255,255,0.08); margin-bottom: 2rem; }
+    .footer-brand .nav-logo-text { color: white; font-size: 1.5rem; margin-bottom: 1rem; display: block; }
+    .footer-brand p { font-size: 0.85rem; line-height: 1.8; max-width: 260px; }
+    .footer-socials { display: flex; gap: 0.7rem; margin-top: 1.5rem; }
+    .social-btn {
+      width: 36px; height: 36px;
+      background: rgba(255,255,255,0.07);
+      border-radius: 50%;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 0.9rem;
+      text-decoration: none;
+      color: rgba(255,255,255,0.6);
+      transition: all 0.3s;
+    }
+    .social-btn:hover { background: var(--amber); color: white; }
+    .footer-col h4 { font-size: 0.75rem; font-weight: 600; letter-spacing: 0.16em; text-transform: uppercase; color: rgba(255,255,255,0.7); margin-bottom: 1.2rem; }
+    .footer-links { list-style: none; display: flex; flex-direction: column; gap: 0.7rem; }
+    .footer-links a { color: rgba(255,255,255,0.4); text-decoration: none; font-size: 0.85rem; transition: color 0.3s; }
+    .footer-links a:hover { color: var(--amber-light); }
+    .footer-bottom { display: flex; justify-content: space-between; align-items: center; font-size: 0.78rem; flex-wrap: wrap; gap: 1rem; }
+    .footer-bottom a { color: rgba(255,255,255,0.3); text-decoration: none; }
+
+    /* ─── CART TOAST ─── */
+    .toast {
+      position: fixed; bottom: 2rem; right: 2rem; z-index: 2000;
+      background: var(--green-deep);
+      border: 1px solid rgba(74,140,92,0.4);
+      color: white;
+      padding: 1rem 1.4rem;
+      border-radius: 4px;
+      font-size: 0.88rem;
+      display: flex; align-items: center; gap: 0.7rem;
+      box-shadow: 0 8px 30px rgba(0,0,0,0.3);
+      transform: translateY(100px); opacity: 0;
+      transition: all 0.4s ease;
+    }
+    .toast.show { transform: translateY(0); opacity: 1; }
+    .toast-icon { font-size: 1.2rem; }
+
+    /* ─── MOBILE NAV ─── */
+    .mobile-nav {
+      position: fixed; inset: 0; z-index: 999;
+      background: var(--green-deep);
+      display: flex; flex-direction: column; align-items: center; justify-content: center;
+      gap: 2rem;
+      transform: translateX(100%);
+      transition: transform 0.4s ease;
+    }
+    .mobile-nav.open { transform: translateX(0); }
+    .mobile-nav a {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 2rem;
+      color: white;
+      text-decoration: none;
+      transition: color 0.3s;
+    }
+    .mobile-nav a:hover { color: var(--amber-light); }
+
+    /* ─── RESPONSIVE ─── */
+    @media (max-width: 1024px) {
+      .about-grid { grid-template-columns: 1fr; gap: 3rem; }
+      .about-image-wrap { max-width: 400px; }
+      .services-grid { grid-template-columns: repeat(2, 1fr); }
+      .seasonal-grid { grid-template-columns: repeat(2, 1fr); }
+      .contact-grid { grid-template-columns: 1fr; gap: 3rem; }
+      .footer-grid { grid-template-columns: 1fr 1fr; gap: 2rem; }
+    }
+    @media (max-width: 768px) {
+      .nav-links { display: none; }
+      .hamburger { display: flex; }
+      .hero-stats { display: none; }
+      section { padding: 4rem 5%; }
+      .services-grid { grid-template-columns: 1fr; }
+      .seasonal-grid { grid-template-columns: 1fr 1fr; }
+      .form-row { grid-template-columns: 1fr; }
+      .footer-grid { grid-template-columns: 1fr; }
+      .newsletter-form { flex-direction: column; }
+    }
+    @media (max-width: 480px) {
+      .seasonal-grid { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- NAV -->
+  <nav id="mainNav">
+    <a href="#" class="nav-logo">
+      <div class="nav-logo-icon">🌿</div>
+      <div class="nav-logo-text">
+        Sahl Green Farm
+        <span>Est. 2008 · Organic</span>
+      </div>
+    </a>
+    <ul class="nav-links">
+      <li><a href="#about">About</a></li>
+      <li><a href="#products">Products</a></li>
+      <li><a href="#services">Services</a></li>
+      <li><a href="#seasonal">Seasonal</a></li>
+      <li><a href="#contact" class="nav-cta">Contact Us</a></li>
+    </ul>
+    <div class="hamburger" id="hamburger" onclick="toggleMobileNav()">
+      <span></span><span></span><span></span>
+    </div>
+  </nav>
+
+  <!-- MOBILE NAV -->
+  <div class="mobile-nav" id="mobileNav">
+    <a href="#about" onclick="toggleMobileNav()">About</a>
+    <a href="#products" onclick="toggleMobileNav()">Products</a>
+    <a href="#services" onclick="toggleMobileNav()">Services</a>
+    <a href="#seasonal" onclick="toggleMobileNav()">Seasonal</a>
+    <a href="#contact" onclick="toggleMobileNav()">Contact</a>
+  </div>
+
+  <!-- HERO -->
+  <section class="hero" id="home">
+    <div class="hero-bg"></div>
+    <div class="hero-pattern"></div>
+    <div class="hero-circle"></div>
+    <div class="hero-circle"></div>
+    <div class="hero-circle"></div>
+
+    <div class="hero-content">
+      <div class="hero-badge">Certified Organic Farm</div>
+      <h1 class="hero-title">
+        <em>Rooted</em> in Nature,<br>
+        <strong>Grown with Heart</strong>
+      </h1>
+      <p class="hero-desc">
+        At Sahl Green Farm, we cultivate the finest organic produce straight from our fields to your table — sustainably, honestly, and with deep respect for the land.
+      </p>
+      <div class="hero-actions">
+        <a href="#products" class="btn-primary">Shop Our Harvest ↓</a>
+        <a href="#about" class="btn-outline">Our Story</a>
+      </div>
+    </div>
+
+    <div class="hero-stats">
+      <div class="stat">
+        <div class="stat-num">120<span>+</span></div>
+        <div class="stat-label">Acres Farmed</div>
+      </div>
+      <div class="stat">
+        <div class="stat-num">40<span>+</span></div>
+        <div class="stat-label">Crop Varieties</div>
+      </div>
+      <div class="stat">
+        <div class="stat-num">15<span>K</span></div>
+        <div class="stat-label">Happy Customers</div>
+      </div>
+    </div>
+
+    <div class="hero-scroll">
+      Scroll<div class="hero-scroll-line"></div>
+    </div>
+  </section>
+
+  <!-- MARQUEE -->
+  <div class="marquee-strip">
+    <div class="marquee-inner" id="marqueeInner"></div>
+  </div>
+
+  <!-- ABOUT -->
+  <section class="about" id="about">
+    <div class="about-grid">
+      <div class="about-image-wrap reveal">
+        <div class="about-accent-box"></div>
+        <div class="about-image-main">
+          <div class="about-image-inner">🌾</div>
+        </div>
+        <div class="about-badge-float">
+          <div class="num">16</div>
+          <div class="lbl">Years of Organic Farming</div>
+        </div>
+      </div>
+      <div>
+        <div class="section-label reveal">Our Story</div>
+        <h2 class="section-title reveal reveal-delay-1">Where <em>Tradition</em> Meets Sustainable Farming</h2>
+        <p class="section-body reveal reveal-delay-2">
+          Founded in 2008, Sahl Green Farm spans over 120 lush acres of certified organic land. We began with a simple belief — that food grown with care, in harmony with nature, nourishes both people and the planet.
+        </p>
+        <p class="section-body reveal reveal-delay-2" style="margin-top:1rem;">
+          Every seed we plant and every crop we harvest is guided by our commitment to organic practices, environmental stewardship, and the community we serve.
+        </p>
+        <div class="about-features reveal reveal-delay-3">
+          <div class="about-feature">
+            <div class="about-feature-icon">🌱</div>
+            <div>
+              <div class="about-feature-title">100% Certified Organic</div>
+              <div class="about-feature-text">No pesticides, no synthetic fertilizers — just pure, natural growing practices.</div>
+            </div>
+          </div>
+          <div class="about-feature">
+            <div class="about-feature-icon">💧</div>
+            <div>
+              <div class="about-feature-title">Water-Smart Irrigation</div>
+              <div class="about-feature-text">Drip irrigation systems reduce water use by 60% compared to traditional methods.</div>
+            </div>
+          </div>
+          <div class="about-feature">
+            <div class="about-feature-icon">🤝</div>
+            <div>
+              <div class="about-feature-title">Community First</div>
+              <div class="about-feature-text">Weekly CSA boxes, farmers markets, and farm-to-school programs serving local families.</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- PRODUCTS -->
+  <section class="products" id="products">
+    <div class="products-header">
+      <div>
+        <div class="section-label reveal">Fresh Harvest</div>
+        <h2 class="section-title reveal reveal-delay-1">Our <em>Finest</em> Produce</h2>
+        <p class="section-body reveal reveal-delay-2">Picked at peak ripeness, delivered straight from our fields.</p>
+      </div>
+      <div class="products-filters reveal">
+        <button class="filter-btn active" onclick="filterProducts('all', this)">All</button>
+        <button class="filter-btn" onclick="filterProducts('vegetable', this)">Vegetables</button>
+        <button class="filter-btn" onclick="filterProducts('fruit', this)">Fruits</button>
+        <button class="filter-btn" onclick="filterProducts('herb', this)">Herbs</button>
+        <button class="filter-btn" onclick="filterProducts('grain', this)">Grains</button>
+      </div>
+    </div>
+    <div class="products-grid" id="productsGrid"></div>
+  </section>
+
+  <!-- SERVICES -->
+  <section class="services" id="services">
+    <div style="text-align:center; max-width:600px; margin:0 auto 1rem;">
+      <div class="section-label reveal" style="justify-content:center;">What We Offer</div>
+      <h2 class="section-title reveal reveal-delay-1" style="text-align:center;">Farm <em>Services</em> & Programs</h2>
+      <p class="section-body reveal reveal-delay-2" style="max-width:100%; text-align:center;">From weekly vegetable boxes to guided farm tours, there's something for everyone at Sahl Green Farm.</p>
+    </div>
+    <div class="services-grid">
+      <div class="service-card reveal">
+        <div class="service-icon">📦</div>
+        <div class="service-title">CSA Subscription Boxes</div>
+        <p class="service-text">Receive a weekly box of fresh, seasonal organic produce delivered straight to your door. Customizable for families of all sizes.</p>
+        <a href="#contact" class="service-link">Subscribe Now →</a>
+      </div>
+      <div class="service-card reveal reveal-delay-1">
+        <div class="service-icon">🚜</div>
+        <div class="service-title">Farm Tours & Experiences</div>
+        <p class="service-text">Walk our fields, meet our team, and learn sustainable farming firsthand. Perfect for schools, families, and corporate groups.</p>
+        <a href="#contact" class="service-link">Book a Tour →</a>
+      </div>
+      <div class="service-card reveal reveal-delay-2">
+        <div class="service-icon">🌾</div>
+        <div class="service-title">Bulk & Wholesale Orders</div>
+        <p class="service-text">Supplying restaurants, hotels, and retailers with premium organic produce at competitive wholesale prices with reliable delivery schedules.</p>
+        <a href="#contact" class="service-link">Get a Quote →</a>
+      </div>
+      <div class="service-card reveal reveal-delay-1">
+        <div class="service-icon">🎓</div>
+        <div class="service-title">Farming Workshops</div>
+        <p class="service-text">Monthly hands-on workshops covering composting, seed saving, organic pest control, and sustainable gardening for home growers.</p>
+        <a href="#contact" class="service-link">Join a Workshop →</a>
+      </div>
+      <div class="service-card reveal reveal-delay-2">
+        <div class="service-icon">🌿</div>
+        <div class="service-title">Farm-to-Table Catering</div>
+        <p class="service-text">Special events catered with our freshest produce. From intimate dinners to large outdoor banquets — all organic, all local.</p>
+        <a href="#contact" class="service-link">Enquire Now →</a>
+      </div>
+      <div class="service-card reveal reveal-delay-3">
+        <div class="service-icon">🐝</div>
+        <div class="service-title">Pollinator & Seed Program</div>
+        <p class="service-text">Support our bee sanctuary and native seed library. Adopt a hive or purchase heritage seeds to grow your own organic garden at home.</p>
+        <a href="#contact" class="service-link">Learn More →</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- SEASONAL -->
+  <section class="seasonal" id="seasonal">
+    <div class="section-label reveal">Calendar</div>
+    <h2 class="section-title reveal reveal-delay-1">What's in Season</h2>
+    <p class="section-body reveal reveal-delay-2">We grow with the seasons — each one brings a unique harvest from our fields.</p>
+    <div class="seasonal-grid">
+      <div class="season-overflow reveal">
+        <div class="season-card season-spring">
+          <div class="season-card-inner">
+            <div class="season-emoji">🌸</div>
+            <div class="season-name">Spring</div>
+            <div class="season-crops">Peas · Spinach · Radish · Asparagus · Lettuce · Spring Onions</div>
+          </div>
+        </div>
+      </div>
+      <div class="season-overflow reveal reveal-delay-1">
+        <div class="season-card season-summer">
+          <div class="season-card-inner">
+            <div class="season-emoji">☀️</div>
+            <div class="season-name">Summer</div>
+            <div class="season-crops">Tomatoes · Zucchini · Peppers · Cucumbers · Basil · Corn</div>
+          </div>
+        </div>
+      </div>
+      <div class="season-overflow reveal reveal-delay-2">
+        <div class="season-card season-autumn">
+          <div class="season-card-inner">
+            <div class="season-emoji">🍂</div>
+            <div class="season-name">Autumn</div>
+            <div class="season-crops">Pumpkin · Apples · Kale · Sweet Potato · Squash · Beetroot</div>
+          </div>
+        </div>
+      </div>
+      <div class="season-overflow reveal reveal-delay-3">
+        <div class="season-card season-winter">
+          <div class="season-card-inner">
+            <div class="season-emoji">❄️</div>
+            <div class="season-name">Winter</div>
+            <div class="season-crops">Cabbage · Leeks · Parsnip · Brussels Sprouts · Turnips · Garlic</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CONTACT -->
+  <section class="contact" id="contact">
+    <div class="contact-grid">
+      <div>
+        <div class="section-label reveal">Get In Touch</div>
+        <h2 class="section-title reveal reveal-delay-1">Let's <em>Grow</em> Together</h2>
+        <p class="section-body reveal reveal-delay-2">Whether you want to visit the farm, subscribe to our CSA box, or become a wholesale partner — we'd love to hear from you.</p>
+        <div class="contact-info-list reveal reveal-delay-3">
+          <div class="contact-info-item">
+            <div class="contact-info-icon">📍</div>
+            <div>
+              <div class="contact-info-label">Location</div>
+              <div class="contact-info-value">Sahl Valley Road, Green Fields District<br>Rural County, AG 12045</div>
+            </div>
+          </div>
+          <div class="contact-info-item">
+            <div class="contact-info-icon">📞</div>
+            <div>
+              <div class="contact-info-label">Phone</div>
+              <div class="contact-info-value">+1 (800) SAHL-GREEN<br>Mon–Sat · 7:00 AM – 6:00 PM</div>
+            </div>
+          </div>
+          <div class="contact-info-item">
+            <div class="contact-info-icon">✉️</div>
+            <div>
+              <div class="contact-info-label">Email</div>
+              <div class="contact-info-value">hello@sahlgreenfarm.com<br>wholesale@sahlgreenfarm.com</div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="reveal reveal-delay-2">
+        <form class="contact-form" id="contactForm" onsubmit="submitContactForm(event)">
+          <div class="form-row">
+            <div class="form-group">
+              <label>First Name</label>
+              <input type="text" id="firstName" placeholder="John" required />
+            </div>
+            <div class="form-group">
+              <label>Last Name</label>
+              <input type="text" id="lastName" placeholder="Smith" required />
+            </div>
+          </div>
+          <div class="form-group">
+            <label>Email Address</label>
+            <input type="email" id="emailInput" placeholder="john@example.com" required />
+          </div>
+          <div class="form-group">
+            <label>I'm Interested In</label>
+            <select id="interest">
+              <option value="">Select a service…</option>
+              <option>CSA Subscription Box</option>
+              <option>Farm Tour / Visit</option>
+              <option>Wholesale / Bulk Order</option>
+              <option>Farming Workshop</option>
+              <option>Farm-to-Table Catering</option>
+              <option>General Enquiry</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label>Message</label>
+            <textarea id="messageInput" rows="4" placeholder="Tell us what you're looking for…" required></textarea>
+          </div>
+          <div class="form-success" id="formSuccess">
+            ✅ &nbsp;Thank you! We'll get back to you within 24 hours.
+          </div>
+          <button type="submit" class="btn-primary" style="width:100%; justify-content:center;">Send Message →</button>
+        </form>
+      </div>
+    </div>
+  </section>
+
+  <!-- NEWSLETTER -->
+  <div class="newsletter">
+    <div class="newsletter-inner">
+      <h2>Stay Close to the Farm</h2>
+      <p>Get seasonal harvest updates, farm news, recipe ideas, and exclusive early access to our CSA boxes.</p>
+      <div class="newsletter-form" id="newsletterForm">
+        <input type="email" id="newsletterEmail" placeholder="Your email address…" />
+        <button onclick="subscribeNewsletter()">Subscribe</button>
+      </div>
+      <div class="newsletter-success" id="newsletterSuccess">
+        🌿 You're in! Welcome to the Sahl Green Farm family.
+      </div>
+    </div>
+  </div>
+
+  <!-- FOOTER -->
+  <footer>
+    <div class="footer-grid">
+      <div class="footer-brand">
+        <span class="nav-logo-text">Sahl Green Farm</span>
+        <p>Rooted in sustainable farming, grown with respect for the land and love for our community since 2008.</p>
+        <div class="footer-socials">
+          <a href="#" class="social-btn">f</a>
+          <a href="#" class="social-btn">𝕏</a>
+          <a href="#" class="social-btn">📸</a>
+          <a href="#" class="social-btn">in</a>
+        </div>
+      </div>
+      <div class="footer-col">
+        <h4>Farm</h4>
+        <ul class="footer-links">
+          <li><a href="#about">Our Story</a></li>
+          <li><a href="#services">Services</a></li>
+          <li><a href="#seasonal">Seasonal Guide</a></li>
+          <li><a href="#">Farm Tours</a></li>
+          <li><a href="#">Certifications</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h4>Shop</h4>
+        <ul class="footer-links">
+          <li><a href="#products">Fresh Produce</a></li>
+          <li><a href="#">CSA Boxes</a></li>
+          <li><a href="#">Wholesale</a></li>
+          <li><a href="#">Gift Bundles</a></li>
+          <li><a href="#">Seeds & Herbs</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h4>Visit</h4>
+        <ul class="footer-links">
+          <li><a href="#">Directions</a></li>
+          <li><a href="#">Farm Hours</a></li>
+          <li><a href="#">Events</a></li>
+          <li><a href="#">Workshops</a></li>
+          <li><a href="#contact">Contact</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <span>© 2024 Sahl Green Farm. All rights reserved.</span>
+      <div style="display:flex;gap:1.5rem;">
+        <a href="#">Privacy Policy</a>
+        <a href="#">Terms of Service</a>
+        <a href="#">Sustainability Pledge</a>
+      </div>
+    </div>
+  </footer>
+
+  <!-- TOAST -->
+  <div class="toast" id="toast">
+    <span class="toast-icon">🛒</span>
+    <span id="toastMsg">Added to cart!</span>
+  </div>
+
+  <script>
+    // ─── DATA ───────────────────────────────────────────────
+    const PRODUCTS = [
+      { id:1, name:'Heritage Tomatoes', cat:'vegetable', emoji:'🍅', desc:'Sun-ripened heirloom varieties in red, orange & yellow — bursting with summer sweetness.', price:'4.50', unit:'per lb', tag:'Bestseller' },
+      { id:2, name:'Baby Spinach', cat:'vegetable', emoji:'🥬', desc:'Tender, nutrient-rich spinach leaves harvested before sunrise for maximum freshness.', price:'3.80', unit:'per bag', tag:null },
+      { id:3, name:'Organic Strawberries', cat:'fruit', emoji:'🍓', desc:'Plump, sweet strawberries grown in our protected tunnels. No chemicals, ever.', price:'6.00', unit:'per punnet', tag:'In Season' },
+      { id:4, name:'Fresh Basil', cat:'herb', emoji:'🌿', desc:'Fragrant Italian large-leaf basil, grown in rich compost and morning sun.', price:'2.50', unit:'per bunch', tag:null },
+      { id:5, name:'Rainbow Chard', cat:'vegetable', emoji:'🌈', desc:'Striking stems of red, yellow and white make this as beautiful as it is nutritious.', price:'3.20', unit:'per bunch', tag:null },
+      { id:6, name:'Honeydew Melon', cat:'fruit', emoji:'🍈', desc:'Intensely fragrant and naturally sweet — a summer staple from our sun-drenched fields.', price:'5.50', unit:'each', tag:'New' },
+      { id:7, name:'Ancient Wheat Berries', cat:'grain', emoji:'🌾', desc:'Stone-milled whole wheat from our heritage grain plots — nutty, dense, and wholesome.', price:'7.00', unit:'per kg', tag:'Heritage' },
+      { id:8, name:'Garden Mint', cat:'herb', emoji:'🫚', desc:'Fresh spearmint and peppermint varieties, perfect for teas, cocktails, and sauces.', price:'1.80', unit:'per bunch', tag:null },
+      { id:9, name:'Butternut Squash', cat:'vegetable', emoji:'🎃', desc:'Creamy, golden flesh with a rich, sweet flavour. Excellent for soups and roasting.', price:'3.00', unit:'each', tag:'Autumn' },
+      { id:10, name:'Mixed Berry Box', cat:'fruit', emoji:'🫐', desc:'Seasonal blueberries, raspberries, and blackcurrants — freshly picked that morning.', price:'8.50', unit:'per box', tag:'Limited' },
+      { id:11, name:'Rolled Oats', cat:'grain', emoji:'🥣', desc:'Slow-rolled from our certified organic oat crop. Creamy and comforting in every bowl.', price:'5.20', unit:'per kg', tag:null },
+      { id:12, name:'French Lavender', cat:'herb', emoji:'💜', desc:'Culinary-grade lavender for baking, teas, and natural home fragrances.', price:'3.50', unit:'per bunch', tag:'Specialty' },
+    ];
+
+    const MARQUEE_ITEMS = ['100% Certified Organic','No Pesticides, Ever','Farm to Table','Sustainable Practices','Harvested Fresh Daily','Community Supported Agriculture','15,000+ Happy Families','Award-Winning Produce','Non-GMO Verified','Water-Smart Farming'];
+
+    // ─── MARQUEE ────────────────────────────────────────────
+    (function buildMarquee() {
+      const inner = document.getElementById('marqueeInner');
+      const doubled = [...MARQUEE_ITEMS, ...MARQUEE_ITEMS];
+      inner.innerHTML = doubled.map(t => `<span class="marquee-item">${t}<span class="marquee-dot"></span></span>`).join('');
+    })();
+
+    // ─── PRODUCTS ───────────────────────────────────────────
+    (function buildProducts() {
+      const grid = document.getElementById('productsGrid');
+      grid.innerHTML = PRODUCTS.map(p => `
+        <div class="product-card reveal" data-cat="${p.cat}">
+          <div class="product-img">
+            ${p.tag ? `<div class="product-tag">${p.tag}</div>` : ''}
+            <span>${p.emoji}</span>
+          </div>
+          <div class="product-info">
+            <div class="product-name">${p.name}</div>
+            <div class="product-desc">${p.desc}</div>
+            <div class="product-footer">
+              <div class="product-price">$${p.price} <span>/ ${p.unit}</span></div>
+              <button class="product-btn" onclick="addToCart('${p.name}')">+</button>
+            </div>
+          </div>
+        </div>
+      `).join('');
+      observeReveal();
+    })();
+
+    function filterProducts(cat, btn) {
+      document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+      document.querySelectorAll('.product-card').forEach(card => {
+        card.style.display = (cat === 'all' || card.dataset.cat === cat) ? '' : 'none';
+      });
+    }
+
+    // ─── CART TOAST ─────────────────────────────────────────
+    let cartCount = 0;
+    function addToCart(name) {
+      cartCount++;
+      const toast = document.getElementById('toast');
+      document.getElementById('toastMsg').textContent = `"${name}" added to cart (${cartCount} item${cartCount>1?'s':''})`;
+      toast.classList.add('show');
+      setTimeout(() => toast.classList.remove('show'), 3000);
+      saveCartToStorage(name);
+    }
+
+    async function saveCartToStorage(name) {
+      try {
+        const existing = await window.storage.get('cart-items');
+        const items = existing ? JSON.parse(existing.value) : [];
+        items.push({ name, addedAt: new Date().toISOString() });
+        await window.storage.set('cart-items', JSON.stringify(items));
+      } catch(e) { /* storage optional */ }
+    }
+
+    // ─── CONTACT FORM ────────────────────────────────────────
+    async function submitContactForm(e) {
+      e.preventDefault();
+      const submission = {
+        id: Date.now(),
+        firstName: document.getElementById('firstName').value,
+        lastName: document.getElementById('lastName').value,
+        email: document.getElementById('emailInput').value,
+        interest: document.getElementById('interest').value,
+        message: document.getElementById('messageInput').value,
+        submittedAt: new Date().toISOString()
+      };
+
+      // Save to backend storage
+      try {
+        const key = `contact:${submission.id}`;
+        await window.storage.set(key, JSON.stringify(submission));
+      } catch(err) { console.warn('Storage unavailable:', err); }
+
+      // Show success
+      document.getElementById('formSuccess').classList.add('show');
+      document.getElementById('contactForm').reset();
+      setTimeout(() => document.getElementById('formSuccess').classList.remove('show'), 6000);
+    }
+
+    // ─── NEWSLETTER ─────────────────────────────────────────
+    async function subscribeNewsletter() {
+      const emailEl = document.getElementById('newsletterEmail');
+      const email = emailEl.value.trim();
+      if (!email || !email.includes('@')) {
+        emailEl.style.borderColor = 'rgba(255,100,100,0.6)';
+        setTimeout(() => emailEl.style.borderColor = '', 2000);
+        return;
+      }
+
+      try {
+        const key = `newsletter:${email.replace('@','_at_').replace('.','_dot_')}`;
+        await window.storage.set(key, JSON.stringify({ email, subscribedAt: new Date().toISOString() }));
+      } catch(err) { console.warn('Storage unavailable:', err); }
+
+      document.getElementById('newsletterForm').style.display = 'none';
+      document.getElementById('newsletterSuccess').classList.add('show');
+    }
+
+    // ─── SCROLL REVEAL ───────────────────────────────────────
+    function observeReveal() {
+      const observer = new IntersectionObserver(entries => {
+        entries.forEach(el => {
+          if (el.isIntersecting) { el.target.classList.add('visible'); observer.unobserve(el.target); }
+        });
+      }, { threshold: 0.12, rootMargin: '0px 0px -40px 0px' });
+      document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+    }
+    observeReveal();
+
+    // ─── STICKY NAV ──────────────────────────────────────────
+    window.addEventListener('scroll', () => {
+      document.getElementById('mainNav').classList.toggle('scrolled', window.scrollY > 80);
+    });
+
+    // ─── MOBILE NAV ──────────────────────────────────────────
+    function toggleMobileNav() {
+      document.getElementById('mobileNav').classList.toggle('open');
+    }
+
+    // ─── LOAD ADMIN DATA (DEV) ──────────────────────────────
+    async function loadAdminSummary() {
+      try {
+        const keys = await window.storage.list('contact:');
+        if (keys && keys.keys && keys.keys.length > 0) {
+          console.log(`📬 Sahl Green Farm Backend: ${keys.keys.length} contact submission(s) stored.`);
+        }
+        const nkeys = await window.storage.list('newsletter:');
+        if (nkeys && nkeys.keys && nkeys.keys.length > 0) {
+          console.log(`📧 Newsletter subscribers: ${nkeys.keys.length}`);
+        }
+      } catch(e) {}
+    }
+    loadAdminSummary();
+  </script>
+</body>
+</html>
